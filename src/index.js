@@ -2,6 +2,7 @@
 /* Save currency conversions between JSON and JavaScript calculations */
 
 var debug = require('nor-debug');
+var is = require('nor-is');
 var currency = module.exports = {};
 
 /** Parse integers */
@@ -9,6 +10,11 @@ function do_parse_int(x) {
 	debug.assert(x).is('string').is('integer');
 	return parseInt(x, 10);
 }
+
+/** Returns true if the value is valid currency object */
+currency.test = function(x) {
+	return (is.number(x) && is.integer(x)) || ( is.string(x) && is.pattern(x, /^[0-9]+(\.[0-9]{2})?$/) );
+};
 
 /** Parse `x` into number presentation that can be calculated
  * @param x {string} The amount in string format
@@ -18,7 +24,7 @@ currency.parse = function(x) {
 
 	function from_string(x) {
 
-		debug.assert(x).is('string').pattern(/^[0-9]+\.[0-9]{2}$/);
+		debug.assert(x).is('string').pattern(/^[0-9]+(\.[0-9]{2})?$/);
 		
 		var parts = x.split('.');
 		if(parts.length === 0) { throw new TypeError("Too few input"); }
@@ -28,11 +34,15 @@ currency.parse = function(x) {
 		var cents = parts.shift();
 	
 		euros = do_parse_int( euros );
-		cents = do_parse_int( cents );
+		if(cents !== undefined) {
+			cents = do_parse_int( cents );
+		} else {
+			cents = 0;
+		}
 	
-		debug.assert(euros).is('number');
-		debug.assert(cents).is('number');
-	
+		debug.assert(euros).is('number').is('integer');
+		debug.assert(cents).is('number').is('integer');
+		
 		var result = euros * 100 + cents;
 		debug.assert(result).is('number').is('integer');
 		return result;
