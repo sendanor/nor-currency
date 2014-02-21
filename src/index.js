@@ -91,4 +91,15 @@ currency.sum = function() {
 	return sum;
 };
 
+/** Calculate subtraction of two or more amounts */
+currency.sub = function() {
+	var args = Array.prototype.slice.call(arguments);
+	var initial = args.shift();
+	var sub = args.reduce(function(a, b) {
+		return currency.parse(a) - currency.parse(b);
+	}, initial);
+	debug.assert(sub).is('integer');
+	return sub;
+};
+
 /* EOF */
