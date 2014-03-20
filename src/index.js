@@ -39,7 +39,7 @@ currency.parse = function(x) {
 		} else {
 			cents = 0;
 		}
-	
+		
 		debug.assert(euros).is('number').is('integer');
 		debug.assert(cents).is('number').is('integer');
 		

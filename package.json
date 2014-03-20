@@ -19,7 +19,7 @@
     "url": "https://github.com/sendanor/nor-currency/issues"
   },
   "dependencies": {
-	"nor-debug": "*"
+	"nor-debug": ">= 0.1.21 <0.2.0"
   },
   "homepage": "https://github.com/sendanor/nor-currency"
 }
