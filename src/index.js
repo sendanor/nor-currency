@@ -71,11 +71,11 @@ currency.stringify = function(x) {
 		}
 	}
 
-	debug.assert(x).is('number').is('integer');
+	debug.assert(x).is('number');
 	var euros = Math.floor( x/100 );
 	var cents = Math.round( x - euros*100 );
-	debug.assert(euros).is('number').is('integer');
-	debug.assert(cents).is('number').is('integer');
+	debug.assert(euros).is('number');
+	debug.assert(cents).is('number');
 	var value = ''+euros.toFixed(0)+'.' + do_padding( cents.toFixed(0) ); 
 	debug.assert(value).is('string').pattern(/^[0-9]+\.[0-9]{2}$/);
 	return value;
