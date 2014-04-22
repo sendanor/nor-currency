@@ -24,20 +24,28 @@ currency.parse = function(x) {
 
 	function from_string(x) {
 
-		debug.assert(x).is('string').pattern(/^[0-9]+(\.[0-9]{2})?$/);
+		debug.assert(x).is('string').pattern(/^[0-9]+(\.[0-9]+)?$/);
 		
 		var parts = x.split('.');
 		if(parts.length === 0) { throw new TypeError("Too few input"); }
 		if(parts.length >= 3) { throw new TypeError("Too much input"); }
 	
 		var euros = parts.shift();
-		var cents = parts.shift();
-	
 		euros = do_parse_int( euros );
-		if(cents !== undefined) {
-			cents = do_parse_int( cents );
-		} else {
+
+		var cents = parts.shift();
+
+		if(cents === undefined) {
 			cents = 0;
+		} else {
+			if(cents.length === 0) {
+				cents = '00';
+			} else if(cents.length === 1) {
+				cents = cents + '0';
+			} else if(cents.length !== 2) {
+				throw new TypeError("No support for split cents");
+			}
+			cents = do_parse_int( cents );
 		}
 		
 		debug.assert(euros).is('number').is('integer');
